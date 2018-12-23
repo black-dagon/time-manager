@@ -16,7 +16,7 @@ public class Main extends Application {
     private Parent root;
 
     @Override
-    public void stop() {
+    public void stop() throws Exception {
         springContext.stop();
     }
 
