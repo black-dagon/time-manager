@@ -1,5 +1,6 @@
 package org.blackdagon.timemanager;
 
+import com.jfoenix.controls.JFXDecorator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,8 +31,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        JFXDecorator decorator = new JFXDecorator(primaryStage, root);
+        decorator.setTitle("Time manager");
         primaryStage.setTitle("Time manager");
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(decorator);
+        scene.getStylesheets().add(Main.class.getResource("/time-manager.css").toExternalForm());
+        primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
 
