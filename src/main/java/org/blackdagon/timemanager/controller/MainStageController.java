@@ -72,10 +72,12 @@ public class MainStageController {
         copyToClipboard(withoutLunchCalculated.getText());
     }
 
-    private void copyToClipboard(String text){
-        ClipboardContent clipboardContent = new ClipboardContent();
-        clipboardContent.putString(text);
-        Clipboard.getSystemClipboard().setContent(clipboardContent);
+    private void copyToClipboard(String text) {
+        if (timeValidator.validate(text)) {
+            ClipboardContent clipboardContent = new ClipboardContent();
+            clipboardContent.putString(dateTimeCalculationFacade.getTimeForJira(text));
+            Clipboard.getSystemClipboard().setContent(clipboardContent);
+        }
     }
 
 }

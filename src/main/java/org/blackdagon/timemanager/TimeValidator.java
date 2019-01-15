@@ -22,6 +22,18 @@ public class TimeValidator {
         }
     }
 
+    public boolean validate(String time) {
+
+        try {
+            LocalTime.parse(time);
+
+            return true;
+
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
     public String getMessage() {
         return message;
     }

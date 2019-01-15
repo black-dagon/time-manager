@@ -29,4 +29,10 @@ public class DefaultDateTimeCalculationFacade implements DateTimeCalculationFaca
         LocalTime result = dateTimeCalculationService.calculateDifferenceInTimeWithoutLunch(startTime, endTime);
         return result.toString();
     }
+
+    @Override
+    public String getTimeForJira(String time) {
+        LocalTime formattedTime = dateTimeCalculationService.getTime(time);
+        return formattedTime.getHour() + "h " + formattedTime.getMinute() + "m";
+    }
 }
