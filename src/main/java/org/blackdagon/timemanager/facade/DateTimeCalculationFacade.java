@@ -7,4 +7,6 @@ public interface DateTimeCalculationFacade {
     String calculateDifferenceInTimeWithoutLunch(String startTime, String endTime);
 
     String getTimeForJira(String time);
+
+    String appendZeroIfNecessary(String hhmm);
 }

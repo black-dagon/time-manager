@@ -50,10 +50,13 @@ public class MainStageController {
 
     @FXML
     private void calculateTimeDifference() {
-        timeValidator.validate(startTime.getText(), endTime.getText());
+        String startTimeText = dateTimeCalculationFacade.appendZeroIfNecessary(startTime.getText());
+        String endTimeText = dateTimeCalculationFacade.appendZeroIfNecessary(endTime.getText());
+
+        timeValidator.validate(startTimeText, endTimeText);
         if (timeValidator.getValid()) {
-            String timeWithLunch = dateTimeCalculationFacade.calculateDifferenceInTime(startTime.getText(), endTime.getText());
-            String timeWithoutLunch = dateTimeCalculationFacade.calculateDifferenceInTimeWithoutLunch(startTime.getText(), endTime.getText());
+            String timeWithLunch = dateTimeCalculationFacade.calculateDifferenceInTime(startTimeText, endTimeText);
+            String timeWithoutLunch = dateTimeCalculationFacade.calculateDifferenceInTimeWithoutLunch(startTimeText, endTimeText);
             withLunchCalculated.setText(timeWithLunch);
             withoutLunchCalculated.setText(timeWithoutLunch);
         } else {

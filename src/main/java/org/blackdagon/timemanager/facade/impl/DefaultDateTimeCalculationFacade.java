@@ -1,5 +1,6 @@
 package org.blackdagon.timemanager.facade.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.blackdagon.timemanager.facade.DateTimeCalculationFacade;
@@ -34,5 +35,27 @@ public class DefaultDateTimeCalculationFacade implements DateTimeCalculationFaca
     public String getTimeForJira(String time) {
         LocalTime formattedTime = dateTimeCalculationService.getTime(time);
         return formattedTime.getHour() + "h " + formattedTime.getMinute() + "m";
+    }
+
+    @Override
+    public String appendZeroIfNecessary(String hhmm){
+
+        if(StringUtils.contains(hhmm, ":")) {
+            String[] formattedString = hhmm.split(":");
+            String hh = formattedString[0];
+            String mm = formattedString[1];
+
+            if (hh.length() <= 1) {
+                hh = "0" + hh;
+            }
+
+            if (mm.length() <= 1) {
+                mm = "0" + mm;
+            }
+
+            return hh + ":" + mm;
+        }
+
+        return hhmm;
     }
 }
