@@ -1,7 +1,6 @@
 package org.blackdagon.timemanager.facade.impl;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.blackdagon.timemanager.facade.DateTimeCalculationFacade;
 import org.blackdagon.timemanager.facade.TimeMessageFacade;
