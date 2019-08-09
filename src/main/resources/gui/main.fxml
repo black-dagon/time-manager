@@ -5,25 +5,32 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-
-<JFXTabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../time-manager.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.blackdagon.timemanager.controller.MainStageController">
+<JFXTabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../time-manager.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.blackdagon.timemanager.controller.MainStageController">
   <tabs>
     <Tab text="Calculate time">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
-                  <JFXButton id="calculate" fx:id="calculate" styleClass="button-primary" layoutX="130.0" layoutY="148.0" mnemonicParsing="false" onAction="#calculateTimeDifference" text="Calculate" />
+                  <JFXButton id="calculate" fx:id="calculate" layoutX="130.0" layoutY="148.0" mnemonicParsing="false" onAction="#calculateTimeDifference" styleClass="button-primary" text="Calculate" />
                   <JFXTextField id="startTime" fx:id="startTime" layoutX="37.0" layoutY="38.0" />
                   <Label layoutX="36.0" layoutY="14.0" text="Start time" />
                   <JFXTextField id="endTime" fx:id="endTime" layoutX="38.0" layoutY="99.0" />
                   <Label layoutX="37.0" layoutY="75.0" text="End time" />
                   <Label layoutX="267.0" layoutY="43.0" text="With lunch:" />
                   <Label layoutX="267.0" layoutY="83.0" text="Without lunch:" />
-                  <Label id="withLunchCalculated" fx:id="withLunchCalculated" layoutX="398.0" layoutY="43.0" text="00:00" />
                   <Label id="withoutLunchCalculated" fx:id="withoutLunchCalculated" layoutX="398.0" layoutY="83.0" text="00:00" />
-                  <JFXButton id="calculate" fx:id="copyTimeWithLunch" styleClass="button-primary" layoutX="505.0" layoutY="38.0" mnemonicParsing="false" onAction="#copyTimeWithLunch" text="Copy" />
-                  <JFXButton id="calculate" fx:id="copyTimeWithoutLunch" styleClass="button-primary" layoutX="505.0" layoutY="78.0" mnemonicParsing="false" onAction="#copyTimeWithoutLunch" text="Copy" />
+                  <Label id="withLunchCalculated" fx:id="withLunchCalculated" layoutX="398.0" layoutY="43.0" text="00:00" />
+                  <JFXButton id="calculate" fx:id="copyTimeWithLunch" layoutX="505.0" layoutY="38.0" mnemonicParsing="false" onAction="#copyTimeWithLunch" styleClass="button-primary" text="Copy" />
+                  <JFXButton id="calculate" fx:id="copyTimeWithoutLunch" layoutX="505.0" layoutY="78.0" mnemonicParsing="false" onAction="#copyTimeWithoutLunch" styleClass="button-primary" text="Copy" />
+                  <TableView id="tableWithTimes" fx:id="tableWithTimes" layoutX="232.0" layoutY="125.0" prefHeight="243.0" prefWidth="370.0">
+                   <columns>
+                       <TableColumn text="First Name" minWidth="300"/>
+                       <TableColumn text="Last Name" minWidth="300"/>
+                   </columns>
+                  </TableView>
                </children></AnchorPane>
       </content>
     </Tab>

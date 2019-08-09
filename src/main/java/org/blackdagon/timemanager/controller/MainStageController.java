@@ -3,6 +3,8 @@ package org.blackdagon.timemanager.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -42,6 +44,9 @@ public class MainStageController {
     @FXML
     private TextField endTime;
 
+    @FXML
+    private final TableView tableWithTimes = new TableView();
+
     private Pair<String, String> messages;
 
     @FXML
@@ -53,6 +58,8 @@ public class MainStageController {
 
     @FXML
     private void copyTimeWithLunch() {
+        setUpTable();
+
         copyToClipboard(withLunchCalculated.getText());
     }
 
@@ -65,6 +72,14 @@ public class MainStageController {
             ClipboardContent clipboardContent = new ClipboardContent();
             clipboardContent.putString(timeMessageFacade.getTimeMessageForJira(text));
             Clipboard.getSystemClipboard().setContent(clipboardContent);
+    }
+
+    private void setUpTable() {
+        tableWithTimes.setEditable(true);
+        TableColumn typeOfMeeting = new TableColumn("Meeting");
+        typeOfMeeting.setMinWidth(100d);
+        tableWithTimes.getColumns().add(typeOfMeeting);
+
     }
 
 }
