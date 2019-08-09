@@ -1,8 +1,8 @@
 package org.blackdagon.timemanager.service.impl;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.blackdagon.timemanager.service.DateTimeCalculationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @Component("dateTimeCalculationService")
 public class DefaultDateTimeCalculationService implements DateTimeCalculationService {
 
-    public static final Logger LOG = LogManager.getLogger(DefaultDateTimeCalculationService.class);
+    public static final Logger LOG = LoggerFactory.getLogger(DefaultDateTimeCalculationService.class);
     private static final int LUNCH = 30;
 
     @Override

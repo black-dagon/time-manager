@@ -6,20 +6,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.blackdagon.timemanager.TimeValidator;
-import org.blackdagon.timemanager.facade.DateTimeCalculationFacade;
+import org.apache.commons.lang3.tuple.Pair;
+import org.blackdagon.timemanager.facade.TimeMessageFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MainStageController {
 
-    private static final Logger LOG = LogManager.getLogger(MainStageController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MainStageController.class);
 
     @Autowired
-    private DateTimeCalculationFacade dateTimeCalculationFacade;
+    private TimeMessageFacade timeMessageFacade;
 
     @FXML
     private Label withLunchCalculated;
@@ -42,27 +42,13 @@ public class MainStageController {
     @FXML
     private TextField endTime;
 
-    private TimeValidator timeValidator;
-
-    public MainStageController() {
-        timeValidator = new TimeValidator();
-    }
+    private Pair<String, String> messages;
 
     @FXML
     private void calculateTimeDifference() {
-        String startTimeText = dateTimeCalculationFacade.appendZeroIfNecessary(startTime.getText());
-        String endTimeText = dateTimeCalculationFacade.appendZeroIfNecessary(endTime.getText());
-
-        timeValidator.validate(startTimeText, endTimeText);
-        if (timeValidator.getValid()) {
-            String timeWithLunch = dateTimeCalculationFacade.calculateDifferenceInTime(startTimeText, endTimeText);
-            String timeWithoutLunch = dateTimeCalculationFacade.calculateDifferenceInTimeWithoutLunch(startTimeText, endTimeText);
-            withLunchCalculated.setText(timeWithLunch);
-            withoutLunchCalculated.setText(timeWithoutLunch);
-        } else {
-            withLunchCalculated.setText(timeValidator.getMessage());
-            withoutLunchCalculated.setText(timeValidator.getMessage());
-        }
+        messages = timeMessageFacade.getTimeMessages(startTime.getText(), endTime.getText());
+        withLunchCalculated.setText(messages.getLeft());
+        withoutLunchCalculated.setText(messages.getRight());
     }
 
     @FXML
@@ -76,11 +62,9 @@ public class MainStageController {
     }
 
     private void copyToClipboard(String text) {
-        if (timeValidator.validate(text)) {
             ClipboardContent clipboardContent = new ClipboardContent();
-            clipboardContent.putString(dateTimeCalculationFacade.getTimeForJira(text));
+            clipboardContent.putString(timeMessageFacade.getTimeMessageForJira(text));
             Clipboard.getSystemClipboard().setContent(clipboardContent);
-        }
     }
 
 }

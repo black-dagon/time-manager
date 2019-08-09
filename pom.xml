@@ -36,7 +36,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M3</version>
+                <version>3.0.0-M2</version>
             </plugin>
         </plugins>
     </build>
@@ -64,11 +64,6 @@
             <version>2.4.0-b180725.0427</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.0-alpha0</version>
-        </dependency>
-        <dependency>
             <groupId>com.jfoenix</groupId>
             <artifactId>jfoenix</artifactId>
             <version>9.0.9</version>
@@ -93,13 +88,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.5.1</version>
+            <version>5.5.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.5.1</version>
+            <version>5.5.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
