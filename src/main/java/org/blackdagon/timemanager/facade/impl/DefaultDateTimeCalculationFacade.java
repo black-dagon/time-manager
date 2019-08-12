@@ -1,7 +1,9 @@
 package org.blackdagon.timemanager.facade.impl;
 
+import javafx.collections.ObservableList;
 import org.apache.commons.lang3.StringUtils;
 import org.blackdagon.timemanager.facade.DateTimeCalculationFacade;
+import org.blackdagon.timemanager.model.Meeting;
 import org.blackdagon.timemanager.service.DateTimeCalculationService;
 import org.blackdagon.timemanager.service.impl.DefaultDateTimeCalculationService;
 import org.slf4j.Logger;
@@ -29,6 +31,17 @@ public class DefaultDateTimeCalculationFacade implements DateTimeCalculationFaca
     public String calculateDifferenceInTimeWithoutLunch(String startTime, String endTime) {
         LocalTime result = dateTimeCalculationService.calculateDifferenceInTimeWithoutLunch(appendZeroIfNecessary(startTime), appendZeroIfNecessary(endTime));
         return result.toString();
+    }
+
+    @Override
+    public ObservableList<Meeting> calculateTimeDifferenceInColumns(String calculatedTime, ObservableList<Meeting> meetings) {
+        for(Meeting meeting : meetings) {
+            meeting.setTime(appendZeroIfNecessary(meeting.getTime()));
+        }
+
+        dateTimeCalculationService.calculateTimeDifferenceInColumns(calculatedTime, meetings);
+
+        return meetings;
     }
 
     @Override

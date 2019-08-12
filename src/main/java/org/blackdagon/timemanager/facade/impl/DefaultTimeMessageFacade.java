@@ -33,6 +33,19 @@ public class DefaultTimeMessageFacade implements TimeMessageFacade {
     }
 
     @Override
+    public String getTimeSubstractionMessage(String time, String timeToSubtract) {
+        String result;
+
+        try {
+            result = dateTimeCalculationFacade.calculateDifferenceInTime(time, timeToSubtract);
+        } catch (DateTimeParseException e){
+            result = PARSE_EXCEPTION_MESSAGE;
+        }
+
+        return result;
+    }
+
+    @Override
     public String getTimeMessageForJira(String time) {
         return dateTimeCalculationFacade.getTimeForJira(time);
     }

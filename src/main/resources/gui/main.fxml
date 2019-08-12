@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+
 <JFXTabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../time-manager.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.blackdagon.timemanager.controller.MainStageController">
   <tabs>
     <Tab text="Calculate time">
@@ -27,8 +28,9 @@
                   <JFXButton id="calculate" fx:id="copyTimeWithoutLunch" layoutX="505.0" layoutY="78.0" mnemonicParsing="false" onAction="#copyTimeWithoutLunch" styleClass="button-primary" text="Copy" />
                   <TableView id="tableWithTimes" fx:id="tableWithTimes" layoutX="232.0" layoutY="125.0" prefHeight="243.0" prefWidth="370.0">
                    <columns>
-                       <TableColumn text="First Name" minWidth="300"/>
-                       <TableColumn text="Last Name" minWidth="300"/>
+                       <TableColumn fx:id="meetingColumn" text="Meeting" minWidth="123"/>
+                       <TableColumn fx:id="timeColumn" text="Time" minWidth="123"/>
+                       <TableColumn fx:id="jiraColumn" text="Jira" minWidth="123"/>
                    </columns>
                   </TableView>
                </children></AnchorPane>

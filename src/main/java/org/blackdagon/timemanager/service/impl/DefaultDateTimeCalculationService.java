@@ -1,10 +1,14 @@
 package org.blackdagon.timemanager.service.impl;
 
+import javafx.collections.ObservableList;
+import org.apache.commons.lang3.StringUtils;
+import org.blackdagon.timemanager.model.Meeting;
 import org.blackdagon.timemanager.service.DateTimeCalculationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.DateTimeException;
 import java.time.LocalTime;
 
 @Component("dateTimeCalculationService")
@@ -30,6 +34,25 @@ public class DefaultDateTimeCalculationService implements DateTimeCalculationSer
         result = result.minusMinutes(LUNCH);
 
         return result;
+    }
+
+    @Override
+    public ObservableList<Meeting> calculateTimeDifferenceInColumns(String calculatedTime, ObservableList<Meeting> meetings) {
+        LocalTime calculated = getTime(calculatedTime);
+
+        for (Meeting meeting : meetings) {
+            try {
+                if(!StringUtils.isBlank(meeting.getTime())) {
+                    LocalTime meetingTime = getTime(meeting.getTime());
+                    calculated = calculated.minusHours(meetingTime.getHour());
+                    calculated = calculated.minusMinutes(meetingTime.getMinute());
+                    meeting.setInJira(calculated.toString());
+                }
+            } catch (DateTimeException e) {
+                LOG.error("Time is invalid");
+            }
+        }
+        return meetings;
     }
 
     @Override
