@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeParseException;
 
+import static org.blackdagon.timemanager.constants.TimeManagerConstants.INVALID_TIME_MESSAGE;
+
 @Component("timeMessageFacade")
 public class DefaultTimeMessageFacade implements TimeMessageFacade {
-
-    private static final String PARSE_EXCEPTION_MESSAGE = "Time not valid";
 
     @Autowired
     private DateTimeCalculationFacade dateTimeCalculationFacade;
@@ -26,23 +26,10 @@ public class DefaultTimeMessageFacade implements TimeMessageFacade {
             timeWithLunch = dateTimeCalculationFacade.calculateDifferenceInTime(startTime, endTime);
             timeWithoutLunch = dateTimeCalculationFacade.calculateDifferenceInTimeWithoutLunch(startTime, endTime);
         } catch (DateTimeParseException e){
-            timeWithLunch = PARSE_EXCEPTION_MESSAGE;
-            timeWithoutLunch = PARSE_EXCEPTION_MESSAGE;
+            timeWithLunch = INVALID_TIME_MESSAGE;
+            timeWithoutLunch = INVALID_TIME_MESSAGE;
         }
         return new ImmutablePair<>(timeWithLunch, timeWithoutLunch);
-    }
-
-    @Override
-    public String getTimeSubstractionMessage(String time, String timeToSubtract) {
-        String result;
-
-        try {
-            result = dateTimeCalculationFacade.calculateDifferenceInTime(time, timeToSubtract);
-        } catch (DateTimeParseException e){
-            result = PARSE_EXCEPTION_MESSAGE;
-        }
-
-        return result;
     }
 
     @Override

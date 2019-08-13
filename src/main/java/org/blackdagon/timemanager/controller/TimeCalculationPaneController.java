@@ -1,33 +1,25 @@
 package org.blackdagon.timemanager.controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import org.apache.commons.lang3.tuple.Pair;
-import org.blackdagon.timemanager.facade.DateTimeCalculationFacade;
 import org.blackdagon.timemanager.facade.TimeMessageFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 @Component
-public class TimeCalculationPaneController implements Initializable {
+public class TimeCalculationPaneController {
 
     private static final Logger LOG = LoggerFactory.getLogger(TimeCalculationPaneController.class);
 
     @Autowired
     private TimeMessageFacade timeMessageFacade;
-
-    @Autowired
-    private DateTimeCalculationFacade dateTimeCalculationFacade;
 
     @FXML
     private Label withLunchCalculated;
@@ -71,10 +63,6 @@ public class TimeCalculationPaneController implements Initializable {
     @FXML
     private void copyTimeWithoutLunch() {
         copyToClipboard(withoutLunchCalculated.getText());
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
     }
 
     private void copyToClipboard(String text) {

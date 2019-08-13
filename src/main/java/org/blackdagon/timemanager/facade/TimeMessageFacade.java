@@ -6,8 +6,6 @@ public interface TimeMessageFacade {
 
     Pair<String, String> getTimeMessages(String startTime, String endTime);
 
-    String getTimeSubstractionMessage(String time, String timeToSubtract);
-
     String getTimeMessageForJira(String time);
 
 }

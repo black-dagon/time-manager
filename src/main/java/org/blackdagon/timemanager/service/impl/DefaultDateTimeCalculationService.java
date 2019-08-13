@@ -11,11 +11,13 @@ import org.springframework.stereotype.Component;
 import java.time.DateTimeException;
 import java.time.LocalTime;
 
+import static org.blackdagon.timemanager.constants.TimeManagerConstants.INVALID_TIME_MESSAGE;
+import static org.blackdagon.timemanager.constants.TimeManagerConstants.LUNCH_MINUTES;
+
 @Component("dateTimeCalculationService")
 public class DefaultDateTimeCalculationService implements DateTimeCalculationService {
 
     public static final Logger LOG = LoggerFactory.getLogger(DefaultDateTimeCalculationService.class);
-    private static final int LUNCH = 30;
 
     @Override
     public LocalTime calculateDifferenceInTime(String hoursAndMinutesStart, String hoursAndMinutesEnd) {
@@ -31,7 +33,7 @@ public class DefaultDateTimeCalculationService implements DateTimeCalculationSer
     @Override
     public LocalTime calculateDifferenceInTimeWithoutLunch(String hoursAndMinutesStart, String hoursAndMinutesEnd) {
         LocalTime result = calculateDifferenceInTime(hoursAndMinutesStart, hoursAndMinutesEnd);
-        result = result.minusMinutes(LUNCH);
+        result = result.minusMinutes(LUNCH_MINUTES);
 
         return result;
     }
@@ -49,7 +51,7 @@ public class DefaultDateTimeCalculationService implements DateTimeCalculationSer
                     meeting.setInJira(calculated.toString());
                 }
             } catch (DateTimeException e) {
-                LOG.error("Time is invalid");
+                LOG.error(INVALID_TIME_MESSAGE);
             }
         }
         return meetings;
