@@ -5,10 +5,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-
 <JFXTabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../time-manager.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.blackdagon.timemanager.controller.MainStageController">
   <tabs>
     <Tab text="Calculate time">
@@ -26,14 +23,9 @@
                   <Label id="withLunchCalculated" fx:id="withLunchCalculated" layoutX="398.0" layoutY="43.0" text="00:00" />
                   <JFXButton id="calculate" fx:id="copyTimeWithLunch" layoutX="505.0" layoutY="38.0" mnemonicParsing="false" onAction="#copyTimeWithLunch" styleClass="button-primary" text="Copy" />
                   <JFXButton id="calculate" fx:id="copyTimeWithoutLunch" layoutX="505.0" layoutY="78.0" mnemonicParsing="false" onAction="#copyTimeWithoutLunch" styleClass="button-primary" text="Copy" />
-                  <TableView id="tableWithTimes" fx:id="tableWithTimes" layoutX="232.0" layoutY="125.0" prefHeight="243.0" prefWidth="370.0">
-                   <columns>
-                       <TableColumn fx:id="meetingColumn" text="Meeting" minWidth="123"/>
-                       <TableColumn fx:id="timeColumn" text="Time" minWidth="123"/>
-                       <TableColumn fx:id="jiraColumn" text="Jira" minWidth="123"/>
-                   </columns>
-                  </TableView>
-               </children></AnchorPane>
+                   <fx:include fx:id="timeTableController" source="timetable.fxml"/>
+               </children>
+        </AnchorPane>
       </content>
     </Tab>
   </tabs>
