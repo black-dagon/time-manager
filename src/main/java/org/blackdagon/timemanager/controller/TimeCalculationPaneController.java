@@ -52,7 +52,7 @@ public class TimeCalculationPaneController {
         messages = timeMessageFacade.getTimeMessages(startTime.getText(), endTime.getText());
         withLunchCalculated.setText(messages.getLeft());
         withoutLunchCalculated.setText(messages.getRight());
-        timeTableController.calculateTimeDifference(messages.getLeft());
+        timeTableController.calculateTimeDifference(messages.getRight());
     }
 
     @FXML
