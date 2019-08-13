@@ -8,13 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.format.DateTimeParseException;
+
 import static org.blackdagon.timemanager.constants.TimeManagerConstants.INVALID_TIME_MESSAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class DefaultTimeMessageFacadeTest {
+
+    private static final String NOT_TIME = "Not time";
 
     @Autowired
     private DefaultTimeMessageFacade timeMessageFacade;
@@ -38,7 +43,7 @@ class DefaultTimeMessageFacadeTest {
 
     @Test
     void getTimeMessagesStartTimeWrong() {
-        Pair<String, String> messages = timeMessageFacade.getTimeMessages("Not time", endTime);
+        Pair<String, String> messages = timeMessageFacade.getTimeMessages(NOT_TIME, endTime);
 
         assertThat(messages.getLeft(), is(INVALID_TIME_MESSAGE));
         assertThat(messages.getRight(), is(INVALID_TIME_MESSAGE));
@@ -46,7 +51,7 @@ class DefaultTimeMessageFacadeTest {
 
     @Test
     void getTimeMessagesEndTimeWrong() {
-        Pair<String, String> messages = timeMessageFacade.getTimeMessages(startTime, "Not time");
+        Pair<String, String> messages = timeMessageFacade.getTimeMessages(startTime, NOT_TIME);
 
         assertThat(messages.getLeft(), is(INVALID_TIME_MESSAGE));
         assertThat(messages.getRight(), is(INVALID_TIME_MESSAGE));
@@ -54,7 +59,7 @@ class DefaultTimeMessageFacadeTest {
 
     @Test
     void getTimeMessagesAllTimeWrong() {
-        Pair<String, String> messages = timeMessageFacade.getTimeMessages("Not time", "Not time");
+        Pair<String, String> messages = timeMessageFacade.getTimeMessages(NOT_TIME, NOT_TIME);
 
         assertThat(messages.getLeft(), is(INVALID_TIME_MESSAGE));
         assertThat(messages.getRight(), is(INVALID_TIME_MESSAGE));
@@ -64,4 +69,10 @@ class DefaultTimeMessageFacadeTest {
     void getTimeMessageForJira() {
         assertThat(timeMessageFacade.getTimeMessageForJira(startTime), is("10h 45m"));
     }
+
+    @Test
+    void getTimeMessageForJiraException() {
+        assertThrows(DateTimeParseException.class, () -> timeMessageFacade.getTimeMessageForJira(NOT_TIME));
+    }
+
 }
