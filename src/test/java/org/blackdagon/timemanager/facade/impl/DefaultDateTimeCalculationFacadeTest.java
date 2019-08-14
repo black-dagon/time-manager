@@ -32,13 +32,13 @@ class DefaultDateTimeCalculationFacadeTest {
     }
 
     @Test
-    void calculateDifferenceInTime() {
+    void calculateDifferenceInTime() throws Exception {
         String result = dateTimeCalculationFacade.calculateDifferenceInTime(startTime, endTime);
         assertThat(result, is("01:15"));
     }
 
     @Test
-    void calculateDifferenceInTimeWithoutLunch() {
+    void calculateDifferenceInTimeWithoutLunch() throws Exception {
         String result = dateTimeCalculationFacade.calculateDifferenceInTimeWithoutLunch(startTime, endTime);
         assertThat(result, is("00:45"));
     }
@@ -71,20 +71,4 @@ class DefaultDateTimeCalculationFacadeTest {
         startTime = dateTimeCalculationFacade.getTimeForJira(startTime);
         assertThat(startTime, is("8h 0m"));
     }
-
-
-    @Test
-    void appendZeroIfNecessary() {
-        String startTime = "8:0";
-        startTime = dateTimeCalculationFacade.appendZeroIfNecessary(startTime);
-        assertThat(startTime, is("08:00"));
-    }
-
-    @Test
-    void appendZeroIfNecessaryNoColon() {
-        String startTime = "80";
-        startTime = dateTimeCalculationFacade.appendZeroIfNecessary(startTime);
-        assertThat(startTime, is("80"));
-    }
-
 }

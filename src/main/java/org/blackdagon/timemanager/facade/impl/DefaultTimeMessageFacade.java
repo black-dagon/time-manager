@@ -4,10 +4,9 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.blackdagon.timemanager.facade.DateTimeCalculationFacade;
 import org.blackdagon.timemanager.facade.TimeMessageFacade;
+import org.blackdagon.timemanager.validator.TimeValidatorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.time.format.DateTimeParseException;
 
 import static org.blackdagon.timemanager.constants.TimeManagerConstants.INVALID_TIME_MESSAGE;
 
@@ -25,7 +24,7 @@ public class DefaultTimeMessageFacade implements TimeMessageFacade {
         try {
             timeWithLunch = dateTimeCalculationFacade.calculateDifferenceInTime(startTime, endTime);
             timeWithoutLunch = dateTimeCalculationFacade.calculateDifferenceInTimeWithoutLunch(startTime, endTime);
-        } catch (DateTimeParseException e){
+        } catch (TimeValidatorException e){
             timeWithLunch = INVALID_TIME_MESSAGE;
             timeWithoutLunch = INVALID_TIME_MESSAGE;
         }

@@ -6,12 +6,16 @@ import org.blackdagon.timemanager.facade.DateTimeCalculationFacade;
 import org.blackdagon.timemanager.model.Meeting;
 import org.blackdagon.timemanager.service.DateTimeCalculationService;
 import org.blackdagon.timemanager.service.impl.DefaultDateTimeCalculationService;
+import org.blackdagon.timemanager.validator.TimeValidatorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
+
+import static org.blackdagon.timemanager.constants.TimeManagerConstants.INVALID_TIME_MESSAGE;
+import static org.blackdagon.timemanager.validator.TimeValidator.validate;
 
 @Component("dateTimeCalculationFacade")
 public class DefaultDateTimeCalculationFacade implements DateTimeCalculationFacade {
@@ -22,21 +26,28 @@ public class DefaultDateTimeCalculationFacade implements DateTimeCalculationFaca
     private DateTimeCalculationService dateTimeCalculationService;
 
     @Override
-    public String calculateDifferenceInTime(String startTime, String endTime) {
-        LocalTime result = dateTimeCalculationService.calculateDifferenceInTime(appendZeroIfNecessary(startTime), appendZeroIfNecessary(endTime));
-        return result.toString();
+    public String calculateDifferenceInTime(String startTime, String endTime) throws TimeValidatorException {
+        startTime = appendZeroIfNecessary(startTime);
+        endTime = appendZeroIfNecessary(endTime);
+        return dateTimeCalculationService.calculateDifferenceInTime(validate(startTime), validate(endTime));
     }
 
     @Override
-    public String calculateDifferenceInTimeWithoutLunch(String startTime, String endTime) {
-        LocalTime result = dateTimeCalculationService.calculateDifferenceInTimeWithoutLunch(appendZeroIfNecessary(startTime), appendZeroIfNecessary(endTime));
-        return result.toString();
+    public String calculateDifferenceInTimeWithoutLunch(String startTime, String endTime) throws TimeValidatorException {
+        startTime = appendZeroIfNecessary(startTime);
+        endTime = appendZeroIfNecessary(endTime);
+
+        return dateTimeCalculationService.calculateDifferenceInTimeWithoutLunch(validate(startTime), validate(endTime));
     }
 
     @Override
     public ObservableList<Meeting> calculateTimeDifferenceInColumns(String calculatedTime, ObservableList<Meeting> meetings) {
         for(Meeting meeting : meetings) {
-            meeting.setTime(appendZeroIfNecessary(meeting.getTime()));
+            try {
+                meeting.setTime(validate(meeting.getTime()));
+            } catch (TimeValidatorException e) {
+                LOG.error(INVALID_TIME_MESSAGE);
+            }
         }
 
         dateTimeCalculationService.calculateTimeDifferenceInColumns(calculatedTime, meetings);
@@ -58,11 +69,11 @@ public class DefaultDateTimeCalculationFacade implements DateTimeCalculationFaca
             String hh = formattedString[0];
             String mm = formattedString[1];
 
-            if (hh.length() <= 1) {
+            if (hh.length() == 1) {
                 hh = "0" + hh;
             }
 
-            if (mm.length() <= 1) {
+            if (mm.length() == 1) {
                 mm = "0" + mm;
             }
 
@@ -71,4 +82,5 @@ public class DefaultDateTimeCalculationFacade implements DateTimeCalculationFaca
 
         return hhmm;
     }
+
 }

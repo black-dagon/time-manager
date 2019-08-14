@@ -34,16 +34,14 @@ class DefaultDateTimeCalculationServiceTest {
 
     @Test
     void calculateDifferenceInTime() {
-        LocalTime result = dateTimeCalculationService.calculateDifferenceInTime(startTime, endTime);
-        assertThat(result.getHour(), is(1));
-        assertThat(result.getMinute(), is(15));
+        String result = dateTimeCalculationService.calculateDifferenceInTime(startTime, endTime);
+        assertThat(result, is("01:15"));
     }
 
     @Test
     void calculateDifferenceInTimeWithoutLunch() {
-        LocalTime result = dateTimeCalculationService.calculateDifferenceInTimeWithoutLunch(startTime, endTime);
-        assertThat(result.getHour(), is(0));
-        assertThat(result.getMinute(), is(45));
+        String result = dateTimeCalculationService.calculateDifferenceInTimeWithoutLunch(startTime, endTime);
+        assertThat(result, is("00:45"));
     }
 
     @Test
@@ -63,7 +61,7 @@ class DefaultDateTimeCalculationServiceTest {
         Meeting meeting2 = new Meeting();
         meeting2.setTime("00:15");
         Meeting meeting3 = new Meeting();
-        meeting3.setTime("00:40");
+        meeting3.setTime("10:10");
 
         meetings.addAll(meeting1, meeting2, meeting3);
 
@@ -71,6 +69,6 @@ class DefaultDateTimeCalculationServiceTest {
 
         assertThat(meetings.get(0).getInJira(), is("10:20"));
         assertThat(meetings.get(1).getInJira(), is("10:05"));
-        assertThat(meetings.get(2).getInJira(), is("09:25"));
+        assertThat(meetings.get(2).getInJira(), is("-00:05"));
     }
 }
