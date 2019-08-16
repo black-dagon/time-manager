@@ -27,7 +27,7 @@ public class DefaultDateTimeCalculationService implements DateTimeCalculationSer
 
         int result = Math.subtractExact(stop, start);
 
-        return longTimeToString(result);
+        return intTimeToString(result);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class DefaultDateTimeCalculationService implements DateTimeCalculationSer
 
         int result = Math.subtractExact(stop, start + LUNCH_MINUTES);
 
-        return longTimeToString(result);
+        return intTimeToString(result);
     }
 
     @Override
@@ -46,11 +46,10 @@ public class DefaultDateTimeCalculationService implements DateTimeCalculationSer
 
         for (Meeting meeting : meetings) {
             try {
-                if(!StringUtils.isBlank(meeting.getTime())) {
+                if (!StringUtils.isBlank(meeting.getTime())) {
                     int meetingTime = stringTimeToMinutes(validate(meeting.getTime()));
                     calculated = Math.subtractExact(calculated, meetingTime);
-                    meeting.setInJira(longTimeToString(calculated));
-
+                    meeting.setInJira(intTimeToString(calculated));
                 }
             } catch (TimeValidatorException e) {
                 // Skip calculation
@@ -64,6 +63,11 @@ public class DefaultDateTimeCalculationService implements DateTimeCalculationSer
         int all = 0;
 
         String[] hhMM = time.split(":");
+
+        if (time.contains("-")) {
+            hhMM[1] = "-" + hhMM[1];
+        }
+
         int hours = Integer.parseInt(hhMM[0]);
         int minutes = Integer.parseInt(hhMM[1]);
 
@@ -74,30 +78,46 @@ public class DefaultDateTimeCalculationService implements DateTimeCalculationSer
     }
 
     @Override
-    public String longTimeToString(int time) {
+    public String intTimeToString(int time) {
         BigDecimal bigDecimal = BigDecimal.valueOf(time);
         bigDecimal = bigDecimal.setScale(0, BigDecimal.ROUND_DOWN);
         bigDecimal = bigDecimal.divide(BigDecimal.valueOf(60L), BigDecimal.ROUND_DOWN);
-        int mmModulus = Math.floorMod(60, time);
+
+        int mmModulus = 0;
+
+        boolean negative = time < 0;
+
+        mmModulus = Math.floorMod(time, 60);
 
         String hh = bigDecimal.toString();
         String mm;
 
-        if(mmModulus == 0) {
-            mm = String.valueOf(time).replace("-", "");
-        }else {
-            mm = String.valueOf(Math.floorMod(time, 60)).replace("-", "");
+        time = time - Integer.parseInt(hh) * 60;
+
+        if (mmModulus == 0 && (time == 60 || time == -60)) {
+            mm = "0";
+        } else if (mmModulus == 0 && (time == 30 || time == -30)) {
+            mm = "30";
+        } else if (mmModulus == 0) {
+            mm = "0";
+        } else if (time < 60 && time > -60) {
+            mm = String.valueOf(time);
+        } else {
+            mm = String.valueOf(Math.floorMod(time, 60));
         }
 
-        if(hh.length() == 1) {
+        hh = hh.replace("-", "");
+        mm = mm.replace("-", "");
+
+        if (hh.length() == 1) {
             hh = "0" + hh;
         }
 
-        if(mm.length() == 1) {
+        if (mm.length() == 1) {
             mm = "0" + mm;
         }
 
-        if(time < 0) {
+        if (negative) {
             hh = "-" + hh;
         }
 

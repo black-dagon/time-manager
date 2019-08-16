@@ -11,11 +11,17 @@ public class TimeValidator {
                 String hh = formattedString[0];
                 String mm = formattedString[1];
 
-                if (hh.length() > 2) {
+                int hoursLength = 2;
+
+                if(hh.contains("-")) {
+                    hoursLength = 3;
+                }
+
+                if (hh.length() > hoursLength ) {
                     throw new TimeValidatorException("Hours have more than 2 characters");
                 }
 
-                if (hh.length() <= 0) {
+                if (hh.length() < hoursLength) {
                     throw new TimeValidatorException("Hours have less than 1 character");
                 }
 
@@ -34,7 +40,7 @@ public class TimeValidator {
 
                 return time;
 
-            } catch (NullPointerException | NumberFormatException e) {
+            } catch (NullPointerException | ArrayIndexOutOfBoundsException | StringIndexOutOfBoundsException | NumberFormatException e) {
                 throw new TimeValidatorException("Missing part of time");
             }
 

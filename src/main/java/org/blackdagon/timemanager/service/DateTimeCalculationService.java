@@ -15,7 +15,7 @@ public interface DateTimeCalculationService {
 
     int stringTimeToMinutes(String time);
 
-    String longTimeToString(int time);
+    String intTimeToString(int time);
 
     LocalTime getTime(String time);
 }

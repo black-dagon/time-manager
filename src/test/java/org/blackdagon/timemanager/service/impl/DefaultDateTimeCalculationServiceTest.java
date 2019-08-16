@@ -71,4 +71,34 @@ class DefaultDateTimeCalculationServiceTest {
         assertThat(meetings.get(1).getInJira(), is("10:05"));
         assertThat(meetings.get(2).getInJira(), is("-00:05"));
     }
+
+    @Test
+    void stringTimeToMinutes() {
+        String positiveTime = "10:30";
+        assertThat(dateTimeCalculationService.stringTimeToMinutes(positiveTime), is(630));
+        String negativeTime = "-10:30";
+        assertThat(dateTimeCalculationService.stringTimeToMinutes(negativeTime), is(-630));
+    }
+
+    @Test
+    void intTimeToString() {
+        int timeWithModulus0 = 120;
+        assertThat(dateTimeCalculationService.intTimeToString(timeWithModulus0), is("02:00"));
+        int timeWithModulus0AndValueOf60 = 60;
+        assertThat(dateTimeCalculationService.intTimeToString(timeWithModulus0AndValueOf60), is("01:00"));
+        int timeWithModulus0AndValueOfMinus60 = -60;
+        assertThat(dateTimeCalculationService.intTimeToString(timeWithModulus0AndValueOfMinus60), is("-01:00"));
+        int timeWithModulus0AndValueOf30 = 30;
+        assertThat(dateTimeCalculationService.intTimeToString(timeWithModulus0AndValueOf30), is("00:30"));
+        int timeWithModulus0AndValueOfMinus30 = -30;
+        assertThat(dateTimeCalculationService.intTimeToString(timeWithModulus0AndValueOfMinus30), is("-00:30"));
+        int timeWithModulusAndValueOf10 = 10;
+        assertThat(dateTimeCalculationService.intTimeToString(timeWithModulusAndValueOf10), is("00:10"));
+        int timeWithModulusAndValueOfMinus10 = -10;
+        assertThat(dateTimeCalculationService.intTimeToString(timeWithModulusAndValueOfMinus10), is("-00:10"));
+        int timeWithModulusAndValueOf130 = 130;
+        assertThat(dateTimeCalculationService.intTimeToString(timeWithModulusAndValueOf130), is("02:10"));
+        int timeWithModulusAndValueOfMinus130 = -130;
+        assertThat(dateTimeCalculationService.intTimeToString(timeWithModulusAndValueOfMinus130), is("-02:10"));
+    }
 }

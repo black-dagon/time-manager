@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.blackdagon.timemanager.facade.DateTimeCalculationFacade;
 import org.blackdagon.timemanager.model.Meeting;
 import org.blackdagon.timemanager.service.DateTimeCalculationService;
-import org.blackdagon.timemanager.service.impl.DefaultDateTimeCalculationService;
 import org.blackdagon.timemanager.validator.TimeValidatorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +13,12 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 
-import static org.blackdagon.timemanager.constants.TimeManagerConstants.INVALID_TIME_MESSAGE;
 import static org.blackdagon.timemanager.validator.TimeValidator.validate;
 
 @Component("dateTimeCalculationFacade")
 public class DefaultDateTimeCalculationFacade implements DateTimeCalculationFacade {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultDateTimeCalculationService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultDateTimeCalculationFacade.class);
 
     @Autowired
     private DateTimeCalculationService dateTimeCalculationService;
@@ -42,11 +40,21 @@ public class DefaultDateTimeCalculationFacade implements DateTimeCalculationFaca
 
     @Override
     public ObservableList<Meeting> calculateTimeDifferenceInColumns(String calculatedTime, ObservableList<Meeting> meetings) {
-        for(Meeting meeting : meetings) {
+
+        try {
+            validate(calculatedTime);
+        } catch (TimeValidatorException e) {
+            LOG.error(e.getMessage());
+            return meetings;
+        }
+
+        for (Meeting meeting : meetings) {
             try {
-                meeting.setTime(validate(meeting.getTime()));
+                if(!meeting.isEmpty()) {
+                    meeting.setTime(validate(appendZeroIfNecessary(meeting.getTime())));
+                }
             } catch (TimeValidatorException e) {
-                LOG.error(INVALID_TIME_MESSAGE);
+                LOG.error(e.getMessage());
             }
         }
 
@@ -69,7 +77,13 @@ public class DefaultDateTimeCalculationFacade implements DateTimeCalculationFaca
             String hh = formattedString[0];
             String mm = formattedString[1];
 
-            if (hh.length() == 1) {
+            int hoursLength = 1;
+
+            if(hh.contains("-")) {
+                hoursLength = 2;
+            }
+
+            if (hh.length() == hoursLength) {
                 hh = "0" + hh;
             }
 
